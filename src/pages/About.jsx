@@ -373,7 +373,7 @@ const About = () => {
             
             <div style={bioSectionStyle} className="fade-in">
               <h2 style={{...sectionTitleStyle, marginBottom: '1rem'}}>
-                Hello! I'm Pav Sher
+                Hello! I'm Vedant Cheulkar
               </h2>
               <p style={{
                 fontSize: '1.1rem',
@@ -384,25 +384,6 @@ const About = () => {
                 A dedicated 3rd-year B.Tech student with an insatiable curiosity for technology and software development. 
                 I believe in the power of code to transform ideas into reality and solve meaningful problems.
               </p>
-              <div style={{
-                display: 'flex',
-                gap: '1rem',
-                flexWrap: 'wrap'
-              }}>
-                {['React', 'JavaScript', 'Node.js', 'Python', 'MongoDB'].map((skill, index) => (
-                  <span key={skill} style={{
-                    background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                    color: 'white',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '20px',
-                    fontSize: '0.9rem',
-                    fontWeight: '500',
-                    animation: `float 2s ease-in-out infinite ${index * 0.2}s`
-                  }}>
-                    {skill}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
 
