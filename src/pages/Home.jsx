@@ -3,8 +3,16 @@ import React, { useState, useEffect } from 'react';
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     setIsLoaded(true);
     
     const handleMouseMove = (e) => {
@@ -15,7 +23,10 @@ const Home = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const handleProjectsClick = () => {
@@ -25,8 +36,6 @@ const Home = () => {
   const handleAboutClick = () => {
     console.log('Navigate to about');
   };
-
-
 
   // Enhanced Styles with responsive design
   const containerStyle = {
@@ -47,7 +56,7 @@ const Home = () => {
       rgba(59, 130, 246, 0.1) 0%, 
       rgba(147, 51, 234, 0.1) 50%, 
       rgba(6, 182, 212, 0.1) 100%)`,
-    transform: `translate(${(mousePosition.x - 50) * 0.02}px, ${(mousePosition.y - 50) * 0.02}px)`,
+    transform: isMobile ? 'none' : `translate(${(mousePosition.x - 50) * 0.02}px, ${(mousePosition.y - 50) * 0.02}px)`,
     transition: 'transform 1s ease-out'
   };
 
@@ -56,19 +65,33 @@ const Home = () => {
     zIndex: 10,
     minHeight: '100vh',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: isMobile ? 'column' : 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '1rem',
-    textAlign: 'center'
+    padding: isMobile ? '2rem 1rem' : '2rem',
+    textAlign: isMobile ? 'center' : 'left',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    gap: isMobile ? '1rem' : '4rem'
+  };
+
+  const textContentStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: isMobile ? 'center' : 'flex-start',
+    marginTop: isMobile ? '0' : '-180px', // Add negative margin to move up
+    paddingTop: '0' // Remove any default padding
   };
 
   const profileContainerStyle = {
     position: 'relative',
-    marginBottom: '1.5rem',
     transform: isLoaded ? 'translateY(0) scale(1)' : 'translateY(50px) scale(0.8)',
     opacity: isLoaded ? 1 : 0,
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
+    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
+    marginBottom: isMobile ? '1.5rem' : 0,
+    marginTop: isMobile ? '1rem' : '50px',
+    alignSelf: isMobile ? 'center' : 'flex-start'
   };
 
   const profileGlowStyle = {
@@ -86,15 +109,15 @@ const Home = () => {
 
   const profileImageStyle = {
     position: 'relative',
-    width: 'clamp(120px, 25vw, 200px)',
-    height: 'clamp(120px, 25vw, 200px)',
+    width: isMobile ? '180px' : 'clamp(200px, 25vw, 300px)',
+    height: isMobile ? '180px' : 'clamp(200px, 25vw, 300px)',
     borderRadius: '50%',
     overflow: 'hidden',
     background: 'linear-gradient(135deg, #1e293b 0%, #3730a3 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 'clamp(2rem, 5vw, 3rem)',
+    fontSize: isMobile ? '2rem' : 'clamp(2rem, 5vw, 3rem)',
     fontWeight: 'bold',
     color: 'white',
     border: '4px solid rgba(255, 255, 255, 0.2)',
@@ -115,7 +138,7 @@ const Home = () => {
   };
 
   const headingStyle = {
-    fontSize: 'clamp(2rem, 8vw, 4.5rem)',
+    fontSize: isMobile ? '2.5rem' : 'clamp(2rem, 8vw, 4.5rem)',
     fontWeight: '800',
     background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #06b6d4 100%)',
     WebkitBackgroundClip: 'text',
@@ -126,7 +149,8 @@ const Home = () => {
     transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
     opacity: isLoaded ? 1 : 0,
     transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s',
-    lineHeight: '1.1'
+    lineHeight: '1.1',
+    textAlign: isMobile ? 'center' : 'left'
   };
 
   const nameSpanStyle = {
@@ -138,45 +162,49 @@ const Home = () => {
   };
 
   const subtitleStyle = {
-    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
+    fontSize: isMobile ? '1.1rem' : 'clamp(1rem, 4vw, 1.5rem)',
     color: '#93c5fd',
     marginBottom: '1rem',
     fontWeight: '600',
     transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
     opacity: isLoaded ? 1 : 0,
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s'
+    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s',
+    textAlign: isMobile ? 'center' : 'left'
   };
 
   const descriptionStyle = {
-    fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+    fontSize: isMobile ? '1rem' : 'clamp(1rem, 3vw, 1.25rem)',
     color: '#d1d5db',
-    maxWidth: '90%',
+    maxWidth: isMobile ? '100%' : '90%',
     lineHeight: '1.7',
     marginBottom: '2rem',
     transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
     opacity: isLoaded ? 1 : 0,
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.7s'
+    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.7s',
+    textAlign: isMobile ? 'center' : 'left',
+    padding: isMobile ? '0 1rem' : 0
   };
 
   const buttonContainerStyle = {
     display: 'flex',
-    gap: 'clamp(1rem, 3vw, 2rem)',
+    gap: isMobile ? '1rem' : 'clamp(1rem, 3vw, 2rem)',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: isMobile ? 'center' : 'flex-start',
     marginBottom: '2rem',
     transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
     opacity: isLoaded ? 1 : 0,
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 1s'
+    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1) 1s',
+    width: isMobile ? '100%' : 'auto'
   };
 
   const primaryButtonStyle = {
     position: 'relative',
-    padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem)',
+    padding: isMobile ? '0.75rem 1.5rem' : 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem)',
     background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
     color: 'white',
     border: 'none',
     borderRadius: '50px',
-    fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
+    fontSize: isMobile ? '0.9rem' : 'clamp(0.9rem, 2.5vw, 1.1rem)',
     fontWeight: '600',
     cursor: 'pointer',
     overflow: 'hidden',
@@ -185,17 +213,21 @@ const Home = () => {
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    width: isMobile ? '100%' : 'auto',
+    minWidth: isMobile ? '100%' : '200px',
+    maxWidth: isMobile ? '250px' : 'none',
+    justifyContent: 'center'
   };
 
   const secondaryButtonStyle = {
     position: 'relative',
-    padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem)',
+    padding: isMobile ? '0.75rem 1.5rem' : 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem)',
     background: 'rgba(255, 255, 255, 0.05)',
     color: '#06b6d4',
     border: '2px solid rgba(6, 182, 212, 0.5)',
     borderRadius: '50px',
-    fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
+    fontSize: isMobile ? '0.9rem' : 'clamp(0.9rem, 2.5vw, 1.1rem)',
     fontWeight: '600',
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
@@ -203,10 +235,33 @@ const Home = () => {
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    width: isMobile ? '100%' : 'auto',
+    minWidth: isMobile ? '100%' : '200px',
+    maxWidth: isMobile ? '250px' : 'none',
+    justifyContent: 'center'
   };
 
+//   // Add this new style for mobile skill tags
+// const mobileSkillsContainer = {
+//   display: isMobile ? 'flex' : 'none',
+//   flexWrap: 'wrap',
+//   justifyContent: 'center',
+//   gap: '0.5rem',
+//   width: '100%',
+//   padding: '0 1rem',
+//   marginBottom: '2rem'
+// };
 
+// const mobileSkillTag = {
+//   padding: '0.4rem 0.8rem',
+//   borderRadius: '20px',
+//   fontSize: '0.8rem',
+//   fontWeight: '500',
+//   backdropFilter: 'blur(10px)',
+//   border: '1px solid rgba(255, 255, 255, 0.1)',
+//   background: 'rgba(255, 255, 255, 0.05)'
+// };
 
   const floatingOrbsStyle = {
     position: 'absolute',
@@ -218,34 +273,17 @@ const Home = () => {
     overflow: 'hidden'
   };
 
-  const skillTagsLeftStyle = {
-    position: 'absolute',
-    top: '25%',
-    left: 'clamp(0.5rem, 3vw, 2rem)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem'
-  };
-
-  const skillTagsRightStyle = {
-    position: 'absolute',
-    top: '35%',
-    right: 'clamp(0.5rem, 3vw, 2rem)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem'
-  };
-
   const skillTagStyle = {
     padding: '0.5rem 1rem',
     borderRadius: '25px',
-    fontSize: 'clamp(0.7rem, 2vw, 0.9rem)',
+    fontSize: '0.9rem',
     fontWeight: '500',
     backdropFilter: 'blur(10px)',
     border: '1px solid',
     transition: 'all 0.3s ease',
     cursor: 'pointer',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    display: isMobile ? 'none' : 'block'
   };
 
   // CSS Animations as a style element
@@ -331,28 +369,14 @@ const Home = () => {
       box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
     }
     
-    @media (max-width: 1024px) {
-      .skill-tags {
-        display: none;
-      }
-    }
-    
     @media (max-width: 768px) {
       .floating-orb {
         display: none;
       }
-    }
-    
-    @media (max-width: 480px) {
-      .button-container {
-        flex-direction: column;
-        align-items: center;
-      }
       
-      .button-container button {
-        width: 100%;
-        max-width: 250px;
-        justify-content: center;
+      #home .main-content {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
       }
     }
   `;
@@ -375,8 +399,7 @@ const Home = () => {
 
           {/* Main Content */}
           <div style={mainContentStyle}>
-            
-            {/* Profile Section */}
+            {/* Profile Section - Moved to top on mobile */}
             <div style={profileContainerStyle}>
               <div style={profileGlowStyle} />
               <div 
@@ -395,7 +418,7 @@ const Home = () => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    orderRadius: '50%',
+                    borderRadius: '50%',
                     objectFit: 'cover',
                     display: 'block'
                   }} 
@@ -404,175 +427,153 @@ const Home = () => {
               <div style={rotatingRingStyle} />
             </div>
 
-            {/* Main Heading */}
-            <h1 style={headingStyle}>
-              Hi, I'm <span style={nameSpanStyle}>Vedant Cheulkar</span>
-            </h1>
+            {/* Text Content */}
+            <div style={textContentStyle}>
+              {/* Main Heading */}
+              <h1 style={headingStyle}>
+                Hi, I'm <span style={nameSpanStyle}>Vedant Cheulkar</span>
+              </h1>
 
-            {/* Subtitle */}
-            <div style={subtitleStyle}>
-              ✨ Aspiring Software Developer ✨
-            </div>
+              {/* Subtitle */}
+              <div style={subtitleStyle}>
+                ✨ App & Web Developer ✨
+              </div>
 
-            {/* Description */}
-            <p style={descriptionStyle}>
-              IT student passionate about creating innovative mobile and web applications. Specialized in React Native, Node.js, and full-stack development. Building 
-              <span style={{ color: '#06b6d4', fontWeight: '600' }}> modern</span>, 
-              <span style={{ color: '#60a5fa', fontWeight: '600' }}> responsive</span>, and 
-              <span style={{ color: '#a855f7', fontWeight: '600' }}> impactful</span> web applications.
-            </p>
+              {/* Description */}
+              <p style={descriptionStyle}>
+                IT student passionate about creating innovative mobile and web applications. Specialized in React Native, Node.js, and full-stack development.
+              </p>
 
-            {/* Action Buttons */}
-            <div style={buttonContainerStyle} className="button-container">
-              <button 
-                style={primaryButtonStyle}
-                className="hover-glow"
-                onClick={handleProjectsClick}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                  e.target.style.boxShadow = '0 15px 40px rgba(37, 99, 235, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0) scale(1)';
-                  e.target.style.boxShadow = '0 10px 30px rgba(37, 99, 235, 0.3)';
-                }}
-              >
-                <span>View Projects</span>
-                <span>→</span>
-              </button>
+              {/* Action Buttons */}
+              <div style={buttonContainerStyle}>
+                <button 
+                  style={primaryButtonStyle}
+                  className="hover-glow"
+                  onClick={handleProjectsClick}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                    e.target.style.boxShadow = '0 15px 40px rgba(37, 99, 235, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 10px 30px rgba(37, 99, 235, 0.3)';
+                  }}
+                >
+                  <span>View Projects</span>
+                  <span>→</span>
+                </button>
 
-              <button 
-                style={secondaryButtonStyle}
-                onClick={handleAboutClick}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                  e.target.style.borderColor = '#06b6d4';
-                  e.target.style.background = 'rgba(6, 182, 212, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0) scale(1)';
-                  e.target.style.borderColor = 'rgba(6, 182, 212, 0.5)';
-                  e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                }}
-              >
-                <span>About Me</span>
-                <span>👤</span>
-              </button>
+                <button 
+                  style={secondaryButtonStyle}
+                  onClick={handleAboutClick}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                    e.target.style.borderColor = '#06b6d4';
+                    e.target.style.background = 'rgba(6, 182, 212, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.borderColor = 'rgba(6, 182, 212, 0.5)';
+                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                  }}
+                >
+                  <span>Get In Touch</span>
+                  <span>👤</span>
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* Floating Skills Tags */}
-          <div style={skillTagsLeftStyle} className="skill-tags">
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(59, 130, 246, 0.2)',
-                borderColor: 'rgba(59, 130, 246, 0.3)',
-                color: '#93c5fd',
-                animation: 'bounce 2s infinite'
-              }}
-            >
-              React
-            </div>
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(147, 51, 234, 0.2)',
-                borderColor: 'rgba(147, 51, 234, 0.3)',
-                color: '#c4b5fd',
-                animation: 'bounce 2s infinite 1s'
-              }}
-            >
-              JavaScript
-            </div>
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(34, 197, 94, 0.2)',
-                borderColor: 'rgba(34, 197, 94, 0.3)',
-                color: '#86efac',
-                animation: 'bounce 2s infinite 2s'
-              }}
-            >
-              Node.js
-            </div>
-          </div>
-
-          <div style={skillTagsRightStyle} className="skill-tags">
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(6, 182, 212, 0.2)',
-                borderColor: 'rgba(6, 182, 212, 0.3)',
-                color: '#67e8f9',
-                animation: 'bounce 2s infinite 0.5s'
-              }}
-            >
-              Python
-            </div>
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(236, 72, 153, 0.2)',
-                borderColor: 'rgba(236, 72, 153, 0.3)',
-                color: '#f9a8d4',
-                animation: 'bounce 2s infinite 1.5s'
-              }}
-            >
-              MongoDB
-            </div>
-            <div 
-              style={{
-                ...skillTagStyle,
-                background: 'rgba(245, 158, 11, 0.2)',
-                borderColor: 'rgba(245, 158, 11, 0.3)',
-                color: '#fcd34d',
-                animation: 'bounce 2s infinite 2.5s'
-              }}
-            >
-              CSS3
-            </div>
-          </div>
-
-          {/* Scroll Indicator
-          <div 
-            style={{
-              position: 'absolute',
-              bottom: '4rem',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              color: '#9ca3af',
-              opacity: isLoaded ? 1 : 0,
-              transition: 'opacity 1s ease 1.4s',
-              animation: 'bounce 2s infinite'
-            }}
-          >
-            <span style={{ fontSize: 'clamp(0.8rem, 2vw, 0.9rem)', marginBottom: '0.5rem' }}>Scroll to explore</span>
-            <div 
-              style={{
-                width: '24px',
-                height: '40px',
-                border: '2px solid #9ca3af',
-                borderRadius: '20px',
+          
+          {/* Floating Skills Tags - Only visible on desktop */}
+          {!isMobile && (
+            <>
+              <div style={{
+                position: 'absolute',
+                top: '70%',
+                left: '5%',
                 display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '8px'
-              }}
-            >
-              <div 
-                style={{
-                  width: '4px',
-                  height: '8px',
-                  backgroundColor: '#9ca3af',
-                  borderRadius: '2px',
-                  animation: 'bounce 1s infinite'
-                }}
-              />
-            </div>
-          </div> */}
+                flexDirection: 'column',
+                gap: '1rem'
+              }}>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 0.3)',
+                    color: '#93c5fd',
+                    animation: 'bounce 2s infinite'
+                  }}
+                >
+                  React Native
+                </div>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(147, 51, 234, 0.2)',
+                    borderColor: 'rgba(147, 51, 234, 0.3)',
+                    color: '#c4b5fd',
+                    animation: 'bounce 2s infinite 1s'
+                  }}
+                >
+                  JavaScript
+                </div>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(34, 197, 94, 0.2)',
+                    borderColor: 'rgba(34, 197, 94, 0.3)',
+                    color: '#86efac',
+                    animation: 'bounce 2s infinite 2s'
+                  }}
+                >
+                  Node.js
+                </div>
+              </div>
+
+              <div style={{
+                position: 'absolute',
+                top: '35%',
+                right: '4%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem'
+              }}>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(6, 182, 212, 0.2)',
+                    borderColor: 'rgba(6, 182, 212, 0.3)',
+                    color: '#67e8f9',
+                    animation: 'bounce 2s infinite 0.5s'
+                  }}
+                >
+                  HTML/CSS
+                </div>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(236, 72, 153, 0.2)',
+                    borderColor: 'rgba(236, 72, 153, 0.3)',
+                    color: '#f9a8d4',
+                    animation: 'bounce 2s infinite 1.5s'
+                  }}
+                >
+                  MongoDB
+                </div>
+                <div 
+                  style={{
+                    ...skillTagStyle,
+                    background: 'rgba(245, 158, 11, 0.2)',
+                    borderColor: 'rgba(245, 158, 11, 0.3)',
+                    color: '#fcd34d',
+                    animation: 'bounce 2s infinite 2.5s'
+                  }}
+                >
+                  Full Stack
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </>
     </section>
