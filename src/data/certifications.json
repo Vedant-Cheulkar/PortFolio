@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Python for Everybody",
+    "platform": "Coursera",
+    "date": "Jan 2024",
+    "image": "cert1.png",
+    "link": "https://coursera.org/verify/123abc"
+  },
+  {
+    "title": "Responsive Web Design",
+    "platform": "freeCodeCamp",
+    "date": "Mar 2024",
+    "image": "cert2.png",
+    "link": "https://freecodecamp.org/cert/456xyz"
+  },
+  {
+    "title": "AI for Beginners",
+    "platform": "Microsoft Learn",
+    "date": "May 2024",
+    "image": "cert3.png",
+    "link": "https://learn.microsoft.com/cert/789def"
+  }
+]

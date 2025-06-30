@@ -1,0 +1,18 @@
+[
+  {
+    "title": "RealEyez - DeepFake Detector",
+    "description": "A web app to detect AI-generated deepfake images using EfficientNet CNN.",
+    "tech": ["Django", "TensorFlow", "Keras", "Bootstrap"],
+    "image": "project1.png",
+    "code": "https://github.com/yourusername/realeyez",
+    "demo": "https://realeyez.vercel.app"
+  },
+  {
+    "title": "AI Skill Mapping System",
+    "description": "Maps user skills with AI & generates adaptive learning paths for upskilling.",
+    "tech": ["React", "Firebase", "Gemini AI"],
+    "image": "project2.png",
+    "code": "https://github.com/yourusername/aiskillmap",
+    "demo": "https://aiskillmap.vercel.app"
+  }
+]

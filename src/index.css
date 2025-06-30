@@ -1,13 +1,170 @@
+/* Add to the top of index.css */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+
+
+/* Modern Base Styles with Theme Support */
+:root {
+  /* Light Theme Defaults */
+  --color-primary: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #2563eb;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --bg-gradient: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #ffffff 100%);
+  
+  /* Dark Theme Variables */
+  --color-primary-dark: #0f172a;
+  --color-secondary-dark: #1e293b;
+  --color-accent-dark: #3b82f6;
+  --color-text-dark: #ffffff;
+  --color-text-secondary-dark: #d1d5db;
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+  --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+
+  /* Current Theme Defaults */
+  --current-primary: var(--color-primary);
+  --current-secondary: var(--color-secondary);
+  --current-accent: var(--color-accent);
+  --current-text: var(--color-text);
+  --current-text-secondary: var(--color-text-secondary);
+  --current-border: var(--color-border);
+  --current-bg-gradient: var(--bg-gradient);
+}
+
+/* Dark Theme Overrides */
+.dark {
+  --current-primary: var(--color-primary-dark);
+  --current-secondary: var(--color-secondary-dark);
+  --current-accent: var(--color-accent-dark);
+  --current-text: var(--color-text-dark);
+  --current-text-secondary: var(--color-text-secondary-dark);
+  --current-border: var(--color-border-dark);
+  --current-bg-gradient: var(--bg-gradient-dark);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+               'Helvetica Neue', Arial, sans-serif;
+  background: var(--current-bg-gradient);
+  color: var(--current-text);
+  line-height: 1.6;
+  transition: background 0.5s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--current-text);
+}
+
+p {
+  margin: 0 0 1em;
+  color: var(--current-text-secondary);
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: var(--current-accent);
+  transition: color 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+}
+
+a:hover {
+  opacity: 0.9;
+  text-decoration: underline;
+}
+
+/* Smooth Scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+}
+
+/* Selection Styling */
+::selection {
+  background: var(--current-accent);
+  color: white;
+}
+
+/* Focus States */
+:focus-visible {
+  outline: 2px solid var(--current-accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--current-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--current-accent);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--current-accent), white 20%);
+}
+
+/* Utility Classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%; /* Changed from 1200px */
+  margin: 0;
+  padding: 0; /* Removed padding */
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 4rem;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
