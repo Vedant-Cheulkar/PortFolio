@@ -2,33 +2,21 @@ import React, { useState, useEffect } from 'react';
 
 const About = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  // const [isDarkTheme, setIsDarkTheme] = useState(true);
   const [activeSection, setActiveSection] = useState('education');
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
-  const themeColors = {
-    dark: {
-      primary: '#0f172a',
-      secondary: '#1e293b',
-      accent: '#3b82f6',
-      text: '#ffffff',
-      textSecondary: '#d1d5db',
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'
-    },
-    light: {
-      primary: '#ffffff',
-      secondary: '#f8fafc',
-      accent: '#2563eb',
-      text: '#1f2937',
-      textSecondary: '#6b7280',
-      gradient: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #ffffff 100%)'
-    }
+  const theme = {
+    primary: '#0f172a',
+    secondary: '#1e293b',
+    accent: '#3b82f6',
+    text: '#ffffff',
+    textSecondary: '#d1d5db',
+    gradient: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'
   };
-
-  const theme = isDarkTheme ? themeColors.dark : themeColors.light;
 
   // Main container styles
   const containerStyle = {
@@ -57,9 +45,7 @@ const About = () => {
   const titleStyle = {
     fontSize: 'clamp(2.5rem, 5vw, 4rem)',
     fontWeight: '800',
-    background: isDarkTheme 
-      ? 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #06b6d4 100%)'
-      : 'linear-gradient(135deg, #1f2937 0%, #3b82f6 50%, #059669 100%)',
+    background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #06b6d4 100%)',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
@@ -75,24 +61,7 @@ const About = () => {
     lineHeight: '1.6'
   };
 
-  // Theme toggle styles
-  const themeToggleStyle = {
-    position: 'absolute',
-    top: '2rem',
-    right: '2rem',
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-    border: `2px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
-    borderRadius: '50px',
-    padding: '0.75rem 1.5rem',
-    cursor: 'pointer',
-    backdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    color: theme.text,
-    fontWeight: '500'
-  };
+
 
   // Profile section styles
   const profileSectionStyle = {
@@ -113,19 +82,15 @@ const About = () => {
     width: '280px',
     height: '350px',
     borderRadius: '20px',
-    background: isDarkTheme 
-      ? 'linear-gradient(135deg, #1e293b 0%, #3730a3 100%)'
-      : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+    background: 'linear-gradient(135deg, #1e293b 0%, #3730a3 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '4rem',
     fontWeight: 'bold',
     color: theme.text,
-    border: `4px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
-    boxShadow: isDarkTheme 
-      ? '0 20px 40px rgba(0, 0, 0, 0.3)'
-      : '0 20px 40px rgba(0, 0, 0, 0.1)',
+    border: '4px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
     transition: 'all 0.5s ease',
     position: 'relative',
     overflow: 'hidden'
@@ -140,20 +105,18 @@ const About = () => {
     background: 'linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4)',
     borderRadius: '25px',
     filter: 'blur(15px)',
-    opacity: isDarkTheme ? 0.7 : 0.3,
+    opacity: 0.7,
     animation: 'pulse 3s infinite',
     zIndex: -1
   };
 
   const bioSectionStyle = {
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+    background: 'rgba(255, 255, 255, 0.05)',
     borderRadius: '20px',
     padding: '2rem',
     backdropFilter: 'blur(10px)',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-    boxShadow: isDarkTheme 
-      ? '0 10px 30px rgba(0, 0, 0, 0.2)'
-      : '0 10px 30px rgba(0, 0, 0, 0.05)'
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
   };
 
   // Navigation tabs styles
@@ -170,11 +133,11 @@ const About = () => {
     borderRadius: '50px',
     background: isActive 
       ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)'
-      : isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+      : 'rgba(255, 255, 255, 0.1)',
     color: isActive ? '#ffffff' : theme.text,
     border: isActive 
       ? 'none' 
-      : `2px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
+      : '2px solid rgba(255, 255, 255, 0.2)',
     cursor: 'pointer',
     fontWeight: '600',
     transition: 'all 0.3s ease',
@@ -187,14 +150,12 @@ const About = () => {
 
   // Content sections styles
   const contentSectionStyle = {
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.7)',
+    background: 'rgba(255, 255, 255, 0.05)',
     borderRadius: '20px',
     padding: '2.5rem',
     backdropFilter: 'blur(10px)',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-    boxShadow: isDarkTheme 
-      ? '0 15px 35px rgba(0, 0, 0, 0.2)'
-      : '0 15px 35px rgba(0, 0, 0, 0.08)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.2)',
     marginBottom: '2rem'
   };
 
@@ -209,11 +170,11 @@ const About = () => {
   };
 
   const listItemStyle = {
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+    background: 'rgba(255, 255, 255, 0.03)',
     padding: '1.5rem',
     borderRadius: '15px',
     marginBottom: '1rem',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)'}`,
+    border: '1px solid rgba(255, 255, 255, 0.08)',
     transition: 'all 0.3s ease'
   };
 
@@ -328,16 +289,6 @@ const About = () => {
       <style>{animationStyles}</style>
       <div style={containerStyle}>
         
-        {/* Theme Toggle */}
-        <div 
-          style={themeToggleStyle}
-          onClick={() => setIsDarkTheme(!isDarkTheme)}
-          className="hover-lift"
-        >
-          <span>{isDarkTheme ? '☀️' : '🌙'}</span>
-          <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
-        </div>
-
         <div style={contentWrapperStyle}>
           
           {/* Header */}
@@ -382,6 +333,10 @@ const About = () => {
                 marginBottom: '1.5rem'
               }}>
                 A dedicated 3rd-year B.Tech student with an insatiable curiosity for technology and software development. 
+                I believe in the power of code to transform ideas into reality and solve meaningful problems.
+                 A dedicated 3rd-year B.Tech student with an insatiable curiosity for technology and software development. 
+                I believe in the power of code to transform ideas into reality and solve meaningful problems.
+                 A dedicated 3rd-year B.Tech student with an insatiable curiosity for technology and software development. 
                 I believe in the power of code to transform ideas into reality and solve meaningful problems.
               </p>
             </div>
@@ -440,52 +395,6 @@ const About = () => {
                 </p>
               </div>
             ))}
-          </div>
-
-          {/* Call to Action */}
-          <div style={{
-            textAlign: 'center',
-            marginTop: '3rem'
-          }}>
-            <div style={{
-              background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-              padding: '2rem',
-              borderRadius: '20px',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`
-            }}>
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: '700',
-                color: theme.text,
-                marginBottom: '1rem'
-              }}>
-                Let's Connect!
-              </h3>
-              <p style={{
-                fontSize: '1.1rem',
-                color: theme.textSecondary,
-                marginBottom: '1.5rem'
-              }}>
-                Always open to collaborating on exciting projects and learning from fellow developers.
-              </p>
-              <button style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                color: 'white',
-                padding: '1rem 2rem',
-                borderRadius: '50px',
-                border: 'none',
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)'
-              }}
-              className="hover-lift"
-              onClick={() => console.log('Navigate to contact')}>
-                Get In Touch →
-              </button>
-            </div>
           </div>
         </div>
       </div>

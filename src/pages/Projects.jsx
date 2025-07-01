@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FiGithub, FiExternalLink } from 'react-icons/fi';
+import { FiGithub, FiExternalLink, FiX } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const Projects = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     setIsLoaded(true);
-    // Check user's preferred color scheme
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     setIsDarkTheme(prefersDark);
   }, []);
@@ -39,34 +39,73 @@ const Projects = () => {
       title: 'RealEyez – The DeepFake AI',
       description: 'A web app that detects AI-generated vs real images using EfficientNet CNN, built with Django and TensorFlow.',
       tech: ['Python', 'TensorFlow', 'Django', 'Bootstrap'],
-      image: 'https://via.placeholder.com/600x360',
       link: 'https://github.com/yourusername/RealEyez',
-      demo: '#'
+      demoVideo: '/videos/realeyez-demo.mp4' // Place video in public/videos/
     },
     {
       title: 'Skill Mapping & Adaptive Learning',
       description: 'AI-based platform that maps user skills and generates adaptive learning pathways. Built during a hackathon.',
       tech: ['React', 'Firebase', 'OpenAI'],
-      image: 'https://via.placeholder.com/600x360',
       link: 'https://github.com/yourusername/SkillMapAI',
-      demo: '#'
+      demoVideo: '/videos/skillmap-demo.mp4'
     },
     {
       title: 'Community Guardian Network',
       description: 'React Native app that connects women with verified counselors and emergency support, including SOS and live tracking.',
       tech: ['React Native', 'Firebase', 'Google Maps API'],
-      image: 'https://via.placeholder.com/600x360',
       link: 'https://github.com/yourusername/GuardianApp',
-      demo: '#'
+      demoVideo: '/videos/guardian-demo.mp4'
     },
   ];
 
-  // Main container styles
+  const modalOverlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    padding: '1rem'
+  };
+
+  const modalContentStyle = {
+    position: 'relative',
+    background: '#000',
+    borderRadius: '12px',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+    overflow: 'hidden'
+  };
+
+  const closeButtonStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    background: 'rgba(255,255,255,0.1)',
+    border: 'none',
+    color: '#fff',
+    fontSize: '1.5rem',
+    cursor: 'pointer',
+    padding: '0.5rem',
+    borderRadius: '50%',
+    zIndex: 10
+  };
+
+  const videoStyle = {
+    width: '100%',
+    height: '100%',
+    display: 'block'
+  };
+
   const containerStyle = {
     minHeight: '100vh',
     background: theme.gradient,
     padding: '2rem 1rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontFamily: "'Inter', sans-serif",
     transition: 'all 0.5s ease'
   };
 
@@ -78,7 +117,6 @@ const Projects = () => {
     transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
   };
 
-  // Header styles
   const headerStyle = {
     textAlign: 'center',
     marginBottom: '4rem',
@@ -94,19 +132,16 @@ const Projects = () => {
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    marginBottom: '1rem',
-    letterSpacing: '-0.02em'
+    marginBottom: '1rem'
   };
 
   const subtitleStyle = {
     fontSize: '1.25rem',
     color: theme.textSecondary,
     maxWidth: '600px',
-    margin: '0 auto',
-    lineHeight: '1.6'
+    margin: '0 auto'
   };
 
-  // Theme toggle styles
   const themeToggleStyle = {
     position: 'absolute',
     top: '2rem',
@@ -117,7 +152,6 @@ const Projects = () => {
     padding: '0.75rem 1.5rem',
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
@@ -125,7 +159,6 @@ const Projects = () => {
     fontWeight: '500'
   };
 
-  // Projects grid styles
   const gridStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
@@ -143,20 +176,11 @@ const Projects = () => {
     boxShadow: isDarkTheme 
       ? '0 15px 35px rgba(0, 0, 0, 0.2)'
       : '0 15px 35px rgba(0, 0, 0, 0.08)',
-    transition: 'all 0.3s ease',
-    position: 'relative'
+    position: 'relative',
+    transition: 'all 0.3s ease'
   };
 
-  const projectImageStyle = {
-    width: '100%',
-    height: '200px',
-    objectFit: 'cover',
-    borderBottom: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`
-  };
-
-  const projectContentStyle = {
-    padding: '1.5rem'
-  };
+  const projectContentStyle = { padding: '1.5rem' };
 
   const projectTitleStyle = {
     fontSize: '1.5rem',
@@ -168,8 +192,8 @@ const Projects = () => {
   const projectDescriptionStyle = {
     fontSize: '1rem',
     color: theme.textSecondary,
-    lineHeight: '1.6',
-    marginBottom: '1.5rem'
+    marginBottom: '1.5rem',
+    lineHeight: '1.6'
   };
 
   const techListStyle = {
@@ -220,47 +244,11 @@ const Projects = () => {
     border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`
   };
 
-  // Animation styles
   const animationStyles = `
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .hover-lift:hover {
-      transform: translateY(-5px);
-    }
-    
-    .fade-in {
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    
     .project-card:hover {
       transform: translateY(-10px);
-      box-shadow: ${isDarkTheme 
-        ? '0 25px 50px rgba(0, 0, 0, 0.3)' 
-        : '0 25px 50px rgba(0, 0, 0, 0.15)'};
     }
-    
-    .project-image {
-      transition: transform 0.5s ease;
-    }
-    
-    .project-card:hover .project-image {
-      transform: scale(1.05);
-    }
-    
+
     @media (max-width: 768px) {
       .grid-responsive {
         grid-template-columns: 1fr !important;
@@ -274,146 +262,140 @@ const Projects = () => {
 
   return (
     <section id="projects">
-    <>
-      <style>{animationStyles}</style>
-      <div style={containerStyle}>
-        
-        {/* Theme Toggle */}
-        <motion.div 
-          style={themeToggleStyle}
-          onClick={() => setIsDarkTheme(!isDarkTheme)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <span>{isDarkTheme ? '☀️' : '🌙'}</span>
-          <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
-        </motion.div>
+      <>
+        <style>{animationStyles}</style>
+        <div style={containerStyle}>
+          <motion.div
+            style={themeToggleStyle}
+            onClick={() => setIsDarkTheme(!isDarkTheme)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>{isDarkTheme ? '☀️' : '🌙'}</span>
+            <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
+          </motion.div>
 
-        <div style={contentWrapperStyle}>
-          
-          {/* Header */}
-          <div style={headerStyle}>
-            <h1 style={titleStyle}>My Projects</h1>
-            <p style={subtitleStyle}>
-              A collection of my work showcasing my skills and creativity in solving real-world problems.
-            </p>
-          </div>
+          <div style={contentWrapperStyle}>
+            <div style={headerStyle}>
+              <h1 style={titleStyle}>My Projects</h1>
+              <p style={subtitleStyle}>
+                A collection of my work showcasing my skills and creativity in solving real-world problems.
+              </p>
+            </div>
 
-          {/* Projects Grid */}
-          <div style={gridStyle} className="grid-responsive">
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                style={projectCardStyle}
-                className="project-card fade-in"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-              >
-                <div style={{ overflow: 'hidden' }}>
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    style={projectImageStyle}
-                    className="project-image"
-                  />
-                </div>
-                <div style={projectContentStyle}>
-                  <h3 style={projectTitleStyle}>{project.title}</h3>
-                  <p style={projectDescriptionStyle}>{project.description}</p>
-                  
-                  <div style={techListStyle}>
-                    {project.tech.map((tech, idx) => (
-                      <span key={idx} style={techTagStyle}>{tech}</span>
-                    ))}
-                  </div>
-                  
-                  <div style={buttonGroupStyle} className="button-group">
-                    <motion.a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={secondaryButtonStyle}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <FiGithub /> Code
-                    </motion.a>
-                    {project.demo && (
+            <div style={gridStyle} className="grid-responsive">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={index}
+                  style={projectCardStyle}
+                  className="project-card"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                >
+                  <div style={projectContentStyle}>
+                    <h3 style={projectTitleStyle}>{project.title}</h3>
+                    <p style={projectDescriptionStyle}>{project.description}</p>
+
+                    <div style={techListStyle}>
+                      {project.tech.map((tech, idx) => (
+                        <span key={idx} style={techTagStyle}>{tech}</span>
+                      ))}
+                    </div>
+
+                    <div style={buttonGroupStyle} className="button-group">
                       <motion.a
-                        href={project.demo}
+                        href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={secondaryButtonStyle}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <FiGithub /> Code
+                      </motion.a>
+                      <motion.button
                         style={primaryButtonStyle}
+                        onClick={() => setSelectedVideo(project.demoVideo)}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
                         <FiExternalLink /> Live Demo
-                      </motion.a>
-                    )}
+                      </motion.button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
 
-          {/* Call to Action */}
-          <motion.div
-            style={{
-              textAlign: 'center',
-              marginTop: '4rem',
-              background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-              padding: '2rem',
-              borderRadius: '20px',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: projects.length * 0.1 + 0.3 }}
-          >
-            <h3 style={{
-              fontSize: '1.5rem',
-              fontWeight: '700',
-              color: theme.text,
-              marginBottom: '1rem'
-            }}>
-              Have a Project in Mind?
-            </h3>
-            <p style={{
-              fontSize: '1.1rem',
-              color: theme.textSecondary,
-              marginBottom: '1.5rem',
-              maxWidth: '600px',
-              marginLeft: 'auto',
-              marginRight: 'auto'
-            }}>
-              I'm always excited to collaborate on new ideas and challenging projects. Let's bring your vision to life!
-            </p>
-            <motion.button
+            <motion.div
               style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                color: 'white',
-                padding: '1rem 2rem',
-                borderRadius: '50px',
-                border: 'none',
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)'
+                textAlign: 'center',
+                marginTop: '4rem',
+                background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                padding: '2rem',
+                borderRadius: '20px',
+                backdropFilter: 'blur(10px)',
+                border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => console.log('Navigate to contact')}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: projects.length * 0.1 + 0.3 }}
             >
-              Get In Touch
-            </motion.button>
-          </motion.div>
+              <h3 style={{
+                fontSize: '1.5rem',
+                fontWeight: '700',
+                color: theme.text,
+                marginBottom: '1rem'
+              }}>
+                Have a Project in Mind?
+              </h3>
+              <p style={{
+                fontSize: '1.1rem',
+                color: theme.textSecondary,
+                marginBottom: '1.5rem',
+                maxWidth: '600px',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }}>
+                I'm always excited to collaborate on new ideas and challenging projects. Let's bring your vision to life!
+              </p>
+              <motion.button
+                style={{
+                  background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  borderRadius: '50px',
+                  border: 'none',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => console.log('Navigate to contact')}
+              >
+                Get In Touch
+              </motion.button>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </>
+
+        {/* Video Modal */}
+        {selectedVideo && (
+          <div style={modalOverlayStyle}>
+            <div style={modalContentStyle}>
+              <button style={closeButtonStyle} onClick={() => setSelectedVideo(null)}>
+                <FiX />
+              </button>
+              <video src={selectedVideo} controls style={videoStyle} />
+            </div>
+          </div>
+        )}
+      </>
     </section>
   );
 };

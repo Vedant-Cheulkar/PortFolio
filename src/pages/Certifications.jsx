@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FiExternalLink } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiDownload, FiPrinter, FiExternalLink } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import Zoom from 'react-medium-image-zoom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'react-medium-image-zoom/dist/styles.css';
 
 const Certificates = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(true);
-
-  useEffect(() => {
-    setIsLoaded(true);
-    // Check user's preferred color scheme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkTheme(prefersDark);
-  }, []);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const themeColors = {
     dark: {
@@ -32,370 +31,301 @@ const Certificates = () => {
     }
   };
 
+  useEffect(() => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setIsDarkTheme(prefersDark);
+  }, []);
+
   const theme = isDarkTheme ? themeColors.dark : themeColors.light;
 
   const certificates = [
     {
-      name: 'Introduction to AI',
-      issuer: 'Coursera - Stanford University',
-      date: 'March 2024',
-      link: 'https://coursera.org/verify/example1',
-      icon: '🧠'
+      name: 'Nirman National Level Industrial Hackathon',
+      issuer: 'odoo',
+      date: 'January 2025',
+      image: '/certificates/Odoo1.png',
+      icon: '💻'
     },
     {
       name: 'Frontend Development with React',
       issuer: 'Meta - Coursera',
-      date: 'February 2024',
-      link: 'https://coursera.org/verify/example2',
+      date: 'Feb 2024',
+      image: '/certificates/react.png',
       icon: '⚛️'
     },
     {
       name: 'Firebase & Full-Stack Bootcamp',
       issuer: 'Udemy',
-      date: 'January 2024',
-      link: 'https://udemy.com/certificate/example3',
+      date: 'Jan 2024',
+      image: '/certificates/firebase.png',
       icon: '🔥'
     },
     {
       name: 'Machine Learning with Python',
       issuer: 'IBM - Coursera',
-      date: 'December 2023',
-      link: 'https://coursera.org/verify/example4',
+      date: 'Dec 2023',
+      image: '/certificates/ml.png',
       icon: '🤖'
     },
     {
-      name: 'Advanced JavaScript Concepts',
-      issuer: 'Frontend Masters',
-      date: 'November 2023',
-      link: 'https://frontendmasters.com/certificate/example5',
-      icon: '📜'
-    },
-    {
-      name: 'Cloud Computing Fundamentals',
-      issuer: 'Google Cloud',
-      date: 'October 2023',
-      link: 'https://cloud.google.com/certificate/example6',
-      icon: '☁️'
+      name: 'Hands-on Flutter Workshop',
+      issuer: 'ACE - PHCET',
+      date: 'Feb 2025',
+      image: '/certificates/flutter.png',
+      icon: '🤖'
     }
   ];
 
-  // Main container styles
-  const containerStyle = {
-    minHeight: '100vh',
-    background: theme.gradient,
-    padding: '2rem 1rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    transition: 'all 0.5s ease'
+  const openModal = (index) => {
+    setSelectedIndex(index);
   };
 
-  const contentWrapperStyle = {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    opacity: isLoaded ? 1 : 0,
-    transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
+  const closeModal = () => {
+    setSelectedIndex(null);
   };
 
-  // Header styles
-  const headerStyle = {
-    textAlign: 'center',
-    marginBottom: '3rem',
-    position: 'relative'
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = certificates[selectedIndex].image;
+    link.download = `${certificates[selectedIndex].name}.png`;
+    link.click();
   };
 
-  const titleStyle = {
-    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-    fontWeight: '800',
-    background: isDarkTheme 
-      ? 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #06b6d4 100%)'
-      : 'linear-gradient(135deg, #1f2937 0%, #3b82f6 50%, #059669 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    marginBottom: '1rem',
-    letterSpacing: '-0.02em'
+  const handlePrint = () => {
+    const printWindow = window.open(certificates[selectedIndex].image, '_blank');
+    printWindow.print();
   };
-
-  const subtitleStyle = {
-    fontSize: '1.25rem',
-    color: theme.textSecondary,
-    maxWidth: '600px',
-    margin: '0 auto',
-    lineHeight: '1.6'
-  };
-
-  // Theme toggle styles
-  const themeToggleStyle = {
-    position: 'absolute',
-    top: '2rem',
-    right: '2rem',
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-    border: `2px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
-    borderRadius: '50px',
-    padding: '0.75rem 1.5rem',
-    cursor: 'pointer',
-    backdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    color: theme.text,
-    fontWeight: '500'
-  };
-
-  // Certificates grid styles
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-    gap: '2rem',
-    maxWidth: '1200px',
-    margin: '0 auto'
-  };
-
-  const certificateCardStyle = {
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.7)',
-    borderRadius: '16px',
-    padding: '2rem',
-    backdropFilter: 'blur(10px)',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-    boxShadow: isDarkTheme 
-      ? '0 15px 35px rgba(0, 0, 0, 0.2)'
-      : '0 15px 35px rgba(0, 0, 0, 0.08)',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    overflow: 'hidden'
-  };
-
-  const certificateIconStyle = {
-    fontSize: '2.5rem',
-    marginBottom: '1rem',
-    display: 'inline-block',
-    transform: 'rotate(-5deg)',
-    transition: 'transform 0.3s ease'
-  };
-
-  const certificateNameStyle = {
-    fontSize: '1.3rem',
-    fontWeight: '700',
-    color: theme.text,
-    marginBottom: '0.5rem',
-    lineHeight: '1.4'
-  };
-
-  const certificateIssuerStyle = {
-    fontSize: '1rem',
-    color: theme.accent,
-    fontWeight: '600',
-    marginBottom: '0.25rem'
-  };
-
-  const certificateDateStyle = {
-    fontSize: '0.9rem',
-    color: theme.textSecondary,
-    marginBottom: '1.5rem'
-  };
-
-  const certificateLinkStyle = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '50px',
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-    color: theme.text,
-    fontSize: '0.95rem',
-    fontWeight: '600',
-    textDecoration: 'none',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
-    transition: 'all 0.3s ease'
-  };
-
-  const glowEffect = {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease'
-  };
-
-  // Animation styles
-  const animationStyles = `
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    .hover-lift:hover {
-      transform: translateY(-5px);
-    }
-    
-    .fade-in {
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    
-    .certificate-card:hover {
-      transform: translateY(-5px);
-      box-shadow: ${isDarkTheme 
-        ? '0 20px 40px rgba(0, 0, 0, 0.3)' 
-        : '0 20px 40px rgba(0, 0, 0, 0.15)'};
-    }
-    
-    .certificate-card:hover .certificate-icon {
-      transform: rotate(0deg) scale(1.1);
-    }
-    
-    .certificate-card:hover .glow-effect {
-      opacity: 1;
-    }
-    
-    .certificate-card:hover .verify-link {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-      border-color: transparent;
-    }
-    
-    @media (max-width: 768px) {
-      .grid-responsive {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  `;
 
   return (
-    <section id="certifications">
-    <>
-      <style>{animationStyles}</style>
-      <div style={containerStyle}>
-        
-        {/* Theme Toggle */}
-        <motion.div 
-          style={themeToggleStyle}
-          onClick={() => setIsDarkTheme(!isDarkTheme)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <span>{isDarkTheme ? '☀️' : '🌙'}</span>
-          <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
-        </motion.div>
+    <section id="certifications" style={{ background: theme.gradient, padding: '2rem' }}>
+      <h1 style={{ color: theme.text, textAlign: 'center', fontSize: '3rem', marginBottom: '2rem' }}>
+        My Achievements
+      </h1>
 
-        <div style={contentWrapperStyle}>
-          
-          {/* Header */}
-          <div style={headerStyle}>
-            <h1 style={titleStyle}>My Certificates</h1>
-            <p style={subtitleStyle}>
-              Recognized achievements and qualifications in various technologies and methodologies.
-            </p>
-          </div>
-
-          {/* Certificates Grid */}
-          <div style={gridStyle} className="grid-responsive">
-            {certificates.map((cert, index) => (
-              <motion.div
-                key={index}
-                style={certificateCardStyle}
-                className="certificate-card fade-in hover-lift"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className="glow-effect" style={glowEffect}></div>
-                <div className="certificate-icon" style={certificateIconStyle}>
-                  {cert.icon}
-                </div>
-                <h3 style={certificateNameStyle}>{cert.name}</h3>
-                <p style={certificateIssuerStyle}>{cert.issuer}</p>
-                <p style={certificateDateStyle}>{cert.date}</p>
-                <motion.a
-                  href={cert.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={certificateLinkStyle}
-                  className="verify-link"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiExternalLink /> Verify Certificate
-                </motion.a>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Call to Action */}
+      {/* Grid of Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: '2rem',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        {certificates.map((cert, i) => (
           <motion.div
+            key={i}
             style={{
+              background: isDarkTheme ? 'rgba(255,255,255,0.05)' : '#f0f0f0',
+              borderRadius: '16px',
+              padding: '1.5rem',
               textAlign: 'center',
-              marginTop: '4rem',
-              background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-              padding: '2rem',
-              borderRadius: '20px',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-              maxWidth: '800px',
-              margin: '0 auto'
+              boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
+              transition: '0.3s',
+              cursor: 'pointer'
             }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: certificates.length * 0.1 + 0.3 }}
+            whileHover={{ scale: 1.02 }}
           >
-            <h3 style={{
-              fontSize: '1.5rem',
-              fontWeight: '700',
-              color: theme.text,
-              marginBottom: '1rem'
-            }}>
-              Continuous Learning Journey
-            </h3>
-            <p style={{
-              fontSize: '1.1rem',
-              color: theme.textSecondary,
-              marginBottom: '1.5rem',
-              lineHeight: '1.6'
-            }}>
-              I'm committed to expanding my knowledge and skills through continuous education. 
-              Currently pursuing more certifications in advanced topics.
-            </p>
-            <motion.button
+            <div style={{ fontSize: '2rem' }}>{cert.icon}</div>
+            <h3 style={{ color: theme.text }}>{cert.name}</h3>
+            <p style={{ color: theme.accent }}>{cert.issuer}</p>
+            <p style={{ color: theme.textSecondary }}>{cert.date}</p>
+            <button
+              onClick={() => openModal(i)}
               style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                marginTop: '1rem',
+                padding: '0.5rem 1rem',
+                borderRadius: '999px',
+                border: '1px solid transparent',
+                background: theme.accent,
                 color: 'white',
-                padding: '1rem 2rem',
-                borderRadius: '50px',
-                border: 'none',
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)'
+                cursor: 'pointer'
               }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => console.log('Navigate to contact')}
             >
-              See My Learning Path
-            </motion.button>
+              <FiExternalLink style={{ marginRight: '0.5rem' }} />
+              View Certificate
+            </button>
           </motion.div>
-        </div>
+        ))}
       </div>
-    </>
+
+      {/* Modal */}
+{/* Modal */}
+<AnimatePresence>
+  {selectedIndex !== null && (
+    <motion.div
+      key="modal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        backdropFilter: 'blur(6px)'
+      }}
+      onClick={closeModal}
+    >
+<motion.div
+  onClick={(e) => e.stopPropagation()}
+  style={{
+    background: isDarkTheme ? theme.secondary : theme.primary,
+    padding: '1rem',
+    borderRadius: '16px',
+    maxWidth: '95vw',
+    maxHeight: '90vh',
+    width: '95vw',
+    color: theme.text,
+    position: 'relative',
+    boxShadow: isDarkTheme
+      ? '0 10px 40px rgba(0,0,0,0.6)'
+      : '0 10px 40px rgba(0,0,0,0.1)',
+    overflowY: 'auto', // Enables scroll only if needed
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }}
+  initial={{ scale: 0.9 }}
+  animate={{ scale: 1 }}
+  exit={{ scale: 0.9 }}
+>
+
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={() => closeModal()}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '16px',
+            background: 'transparent',
+            border: 'none',
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: theme.textSecondary,
+            cursor: 'pointer',
+            zIndex: 10
+          }}
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        {/* Swiper for image navigation */}
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          initialSlide={selectedIndex}
+          onSlideChange={(swiper) => setSelectedIndex(swiper.activeIndex)}
+          style={{ width: '100%', height: 'auto' }}
+        >
+          {certificates.map((cert, i) => (
+<SwiperSlide key={i}>
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      height: '100%',
+      padding: '1rem',
+      boxSizing: 'border-box'
+    }}
+  >
+    {/* Certificate Image */}
+    <div
+      style={{
+        maxHeight: '60vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden'
+      }}
+    >
+      <Zoom>
+        <img
+          src={cert.image}
+          alt={cert.name}
+          style={{
+            maxWidth: '600px',
+            width: '100%',
+            height: 'auto',
+            borderRadius: '8px',
+            objectFit: 'contain',
+            boxShadow: isDarkTheme
+              ? '0 4px 20px rgba(255,255,255,0.1)'
+              : '0 4px 20px rgba(0,0,0,0.1)'
+          }}
+        />
+      </Zoom>
+    </div>
+
+    {/* Certificate Details */}
+    <div
+      style={{
+        marginTop: '1rem',
+        textAlign: 'center',
+        maxWidth: '90%',
+        overflowWrap: 'break-word'
+      }}
+    >
+      <h2 style={{ margin: 0, fontSize: '1.4rem', color: theme.text }}>
+        {cert.name}
+      </h2>
+      <p style={{ margin: '0.25rem 0', fontWeight: '500', color: theme.accent }}>
+        {cert.issuer}
+      </p>
+      <p style={{ margin: 0, fontSize: '0.95rem', color: theme.textSecondary }}>
+        {cert.date}
+      </p>
+    </div>
+  </div>
+</SwiperSlide>
+
+
+          ))}
+        </Swiper>
+
+        {/* Action Buttons */}
+        <div style={{
+          marginTop: '1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <button onClick={handleDownload} style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            background: theme.accent,
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer'
+          }}>
+            <FiDownload style={{ marginRight: '6px' }} />
+            Download
+          </button>
+
+          <button onClick={handlePrint} style={{
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            background: isDarkTheme ? '#22c55e' : '#10b981',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer'
+          }}>
+            <FiPrinter style={{ marginRight: '6px' }} />
+            Print
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </section>
   );
 };

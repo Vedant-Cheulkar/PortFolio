@@ -1,450 +1,332 @@
 import React, { useState, useEffect } from 'react';
 import {
-  SiC,
-  SiCplusplus,
-  SiHtml5,
-  SiCss3,
-  SiJavascript,
-  SiReact,
-  SiTailwindcss,
-  SiFirebase,
-  SiGit,
-  SiGithub,
-  SiPython,
-  SiMysql,
-  SiRedux,
+  SiC, SiCplusplus, SiHtml5, SiCss3, SiJavascript, SiReact, SiTailwindcss,
+  SiFirebase, SiGit, SiGithub, SiPython, SiMysql, SiRedux,
 } from 'react-icons/si';
 
 const Skills = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [columns, setColumns] = useState(getColumns());
 
   useEffect(() => {
     setIsLoaded(true);
-    // Check user's preferred color scheme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkTheme(prefersDark);
+    const handleResize = () => setColumns(getColumns());
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  function getColumns() {
+    const width = window.innerWidth;
+    if (width >= 1200) return 'repeat(3, 1fr)';
+    if (width >= 768) return 'repeat(2, 1fr)';
+    return '1fr';
+  }
+
   const themeColors = {
-    dark: {
-      primary: '#0f172a',
-      secondary: '#1e293b',
-      accent: '#3b82f6',
-      text: '#ffffff',
-      textSecondary: '#d1d5db',
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'
-    },
-    light: {
-      primary: '#ffffff',
-      secondary: '#f8fafc',
-      accent: '#2563eb',
-      text: '#1f2937',
-      textSecondary: '#6b7280',
-      gradient: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #ffffff 100%)'
-    }
+    primary: '#0f172a',
+    secondary: '#1e293b',
+    accent: '#3b82f6',
+    text: '#ffffff',
+    textSecondary: '#d1d5db',
+    gradient: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'
   };
 
-  const theme = isDarkTheme ? themeColors.dark : themeColors.light;
+  const theme = themeColors;
 
   const skills = [
-    { name: 'C', icon: <SiC />, level: 'Proficient', color: '#A8B9CC' },
-    { name: 'C++', icon: <SiCplusplus />, level: 'Proficient', color: '#00599C' },
-    { name: 'HTML', icon: <SiHtml5 />, level: 'Advanced', color: '#E34F26' },
-    { name: 'CSS', icon: <SiCss3 />, level: 'Advanced', color: '#1572B6' },
-    { name: 'JavaScript', icon: <SiJavascript />, level: 'Advanced', color: '#F7DF1E' },
-    { name: 'React.js', icon: <SiReact />, level: 'Intermediate', color: '#61DAFB' },
-    { name: 'Redux', icon: <SiRedux />, level: 'Intermediate', color: '#764ABC' },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss />, level: 'Intermediate', color: '#06B6D4' },
-    { name: 'Firebase', icon: <SiFirebase />, level: 'Intermediate', color: '#FFCA28' },
-    { name: 'Git', icon: <SiGit />, level: 'Proficient', color: '#F05032' },
-    { name: 'GitHub', icon: <SiGithub />, level: 'Proficient', color: '#181717' },
-    { name: 'Python', icon: <SiPython />, level: 'Intermediate', color: '#3776AB' },
-    { name: 'MySQL', icon: <SiMysql />, level: 'Intermediate', color: '#4479A1' },
+    { name: 'C', icon: <SiC />, level: 'Proficient', percentage: 85, color: '#A8B9CC', category: 'Programming', description: 'Systems programming and algorithm implementation' },
+    { name: 'C++', icon: <SiCplusplus />, level: 'Proficient', percentage: 80, color: '#00599C', category: 'Programming', description: 'Object-oriented programming and data structures' },
+    { name: 'HTML5', icon: <SiHtml5 />, level: 'Expert', percentage: 95, color: '#E34F26', category: 'Frontend', description: 'Semantic markup and modern web standards' },
+    { name: 'CSS3', icon: <SiCss3 />, level: 'Expert', percentage: 90, color: '#1572B6', category: 'Frontend', description: 'Advanced styling, animations, and responsive design' },
+    { name: 'JavaScript', icon: <SiJavascript />, level: 'Advanced', percentage: 88, color: '#F7DF1E', category: 'Programming', description: 'ES6+, async programming, and DOM manipulation' },
+    { name: 'React.js', icon: <SiReact />, level: 'Advanced', percentage: 85, color: '#61DAFB', category: 'Frontend', description: 'Component-based architecture and hooks' },
+    { name: 'Redux', icon: <SiRedux />, level: 'Intermediate', percentage: 75, color: '#764ABC', category: 'Frontend', description: 'State management and predictable data flow' },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss />, level: 'Advanced', percentage: 82, color: '#06B6D4', category: 'Frontend', description: 'Utility-first CSS framework and design systems' },
+    { name: 'Firebase', icon: <SiFirebase />, level: 'Intermediate', percentage: 70, color: '#FFCA28', category: 'Backend', description: 'Authentication, database, and hosting services' },
+    { name: 'Git', icon: <SiGit />, level: 'Proficient', percentage: 85, color: '#F05032', category: 'Tools', description: 'Version control and collaborative development' },
+    { name: 'GitHub', icon: <SiGithub />, level: 'Proficient', percentage: 85, color: '#ffffff', category: 'Tools', description: 'Repository management and CI/CD workflows' },
+    { name: 'Python', icon: <SiPython />, level: 'Intermediate', percentage: 78, color: '#3776AB', category: 'Programming', description: 'Scripting, automation, and backend development' },
+    { name: 'MySQL', icon: <SiMysql />, level: 'Intermediate', percentage: 72, color: '#4479A1', category: 'Database', description: 'Relational database design and optimization' },
   ];
 
-  // Main container styles
-  const containerStyle = {
-    minHeight: '100vh',
-    background: theme.gradient,
-    padding: '2rem 1rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    transition: 'all 0.5s ease'
-  };
-
-  const contentWrapperStyle = {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    opacity: isLoaded ? 1 : 0,
-    transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-    transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)'
-  };
-
-  // Header styles
-  const headerStyle = {
-    textAlign: 'center',
-    marginBottom: '4rem',
-    position: 'relative'
-  };
-
-  const titleStyle = {
-    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-    fontWeight: '800',
-    background: isDarkTheme 
-      ? 'linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #06b6d4 100%)'
-      : 'linear-gradient(135deg, #1f2937 0%, #3b82f6 50%, #059669 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    marginBottom: '1rem',
-    letterSpacing: '-0.02em'
-  };
-
-  const subtitleStyle = {
-    fontSize: '1.25rem',
-    color: theme.textSecondary,
-    maxWidth: '600px',
-    margin: '0 auto',
-    lineHeight: '1.6'
-  };
-
-  // Theme toggle styles
-  const themeToggleStyle = {
-    position: 'absolute',
-    top: '2rem',
-    right: '2rem',
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-    border: `2px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
-    borderRadius: '50px',
-    padding: '0.75rem 1.5rem',
-    cursor: 'pointer',
-    backdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    color: theme.text,
-    fontWeight: '500'
-  };
-
-  // Skills grid styles
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '2rem',
-    maxWidth: '1000px',
-    margin: '0 auto'
-  };
-
-  const skillCardStyle = {
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.7)',
-    borderRadius: '20px',
-    padding: '2rem',
-    backdropFilter: 'blur(10px)',
-    border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-    boxShadow: isDarkTheme 
-      ? '0 15px 35px rgba(0, 0, 0, 0.2)'
-      : '0 15px 35px rgba(0, 0, 0, 0.08)',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    overflow: 'hidden'
-  };
-
-  const skillIconStyle = (color) => ({
-    fontSize: '3rem',
-    color: color,
-    marginBottom: '1rem',
-    transition: 'transform 0.3s ease'
-  });
-
-  const skillNameStyle = {
-    fontWeight: '600',
-    fontSize: '1.3rem',
-    color: theme.text,
-    marginBottom: '0.5rem'
-  };
-
-  const skillLevelStyle = {
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    color: theme.textSecondary,
-    marginBottom: '1.5rem'
-  };
-
-  const progressBarStyle = (color) => ({
-    height: '6px',
-    width: '100%',
-    background: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-    borderRadius: '10px',
-    overflow: 'hidden'
-  });
-
-  const progressFillStyle = (color, level) => ({
-    height: '100%',
-    background: color,
-    borderRadius: '10px',
-    width: level === 'Proficient' ? '90%' : level === 'Advanced' ? '75%' : '60%',
-    transition: 'width 1s ease'
-  });
-
-  const glowEffect = {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease'
-  };
-
-  // Animation styles
-  const animationStyles = `
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    .hover-lift:hover {
-      transform: translateY(-5px);
-    }
-    
-    .fade-in {
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    
-    .skill-card:hover .skill-icon {
-      transform: scale(1.2);
-    }
-    
-    .skill-card:hover .glow-effect {
-      opacity: 1;
-    }
-    
-    @media (max-width: 768px) {
-      .grid-responsive {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  `;
+  const categoriesData = [
+    { title: 'Frontend Development', skills: skills.filter(s => s.category === 'Frontend'), color: '#3b82f6', icon: '🎨' },
+    { title: 'Programming Languages', skills: skills.filter(s => s.category === 'Programming'), color: '#8b5cf6', icon: '💻' },
+    { title: 'Backend & Database', skills: skills.filter(s => s.category === 'Backend' || s.category === 'Database'), color: '#06b6d4', icon: '⚡' },
+    { title: 'Development Tools', skills: skills.filter(s => s.category === 'Tools'), color: '#10b981', icon: '🛠️' }
+  ];
 
   return (
     <section id="skills">
-    <>
-      <style>{animationStyles}</style>
-      <div style={containerStyle}>
-        
-        {/* Theme Toggle */}
-        <div 
-          style={themeToggleStyle}
-          onClick={() => setIsDarkTheme(!isDarkTheme)}
-          className="hover-lift"
-        >
-          <span>{isDarkTheme ? '☀️' : '🌙'}</span>
-          <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
-        </div>
-
-        <div style={contentWrapperStyle}>
-          
-          {/* Header */}
-          <div style={headerStyle}>
-            <h1 style={titleStyle}>My Skills</h1>
-            <p style={subtitleStyle}>
-              Technologies I've worked with and my proficiency level in each.
+      <div style={{
+        minHeight: '100vh',
+        background: theme.gradient,
+        padding: '4rem 1rem',
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        transition: 'all 0.5s ease',
+        position: 'relative'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'all 1s ease'
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+            <h1 style={{
+              fontSize: window.innerWidth > 768 ? '4rem' : '2.5rem',
+              fontWeight: '900',
+              background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 30%, #06b6d4 70%, #8b5cf6 100%)',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              marginBottom: '1.5rem',
+              letterSpacing: '-0.03em',
+              lineHeight: '1.1'
+            }}>Technical Expertise</h1>
+            <p style={{
+              fontSize: '1.2rem',
+              color: theme.textSecondary,
+              maxWidth: '700px',
+              margin: '0 auto 2rem',
+              lineHeight: '1.7'
+            }}>
+              A comprehensive overview of my technical skills and the technologies I leverage to create exceptional digital experiences.
             </p>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '1.5rem',
+              flexWrap: 'wrap',
+              marginTop: '2rem'
+            }}>
+              <div style={{ textAlign: 'center', padding: '1rem' }}>
+                <span style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '800',
+                  color: theme.accent,
+                  display: 'block',
+                  lineHeight: '1'
+                }}>13+</span>
+                <span style={{
+                  fontSize: '0.95rem',
+                  color: theme.textSecondary,
+                  marginTop: '0.5rem',
+                  fontWeight: '500'
+                }}>Technologies</span>
+              </div>
+              <div style={{ textAlign: 'center', padding: '1rem' }}>
+                <span style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '800',
+                  color: theme.accent,
+                  display: 'block',
+                  lineHeight: '1'
+                }}>4</span>
+                <span style={{
+                  fontSize: '0.95rem',
+                  color: theme.textSecondary,
+                  marginTop: '0.5rem',
+                  fontWeight: '500'
+                }}>Specializations</span>
+              </div>
+              <div style={{ textAlign: 'center', padding: '1rem' }}>
+                <span style={{
+                  fontSize: '2.5rem',
+                  fontWeight: '800',
+                  color: theme.accent,
+                  display: 'block',
+                  lineHeight: '1'
+                }}>82%</span>
+                <span style={{
+                  fontSize: '0.95rem',
+                  color: theme.textSecondary,
+                  marginTop: '0.5rem',
+                  fontWeight: '500'
+                }}>Avg Proficiency</span>
+              </div>
+            </div>
           </div>
 
           {/* Skills Grid */}
-          <div style={gridStyle} className="grid-responsive">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '2rem',
+            maxWidth: '1200px',
+            margin: '0 auto 5rem'
+          }}>
             {skills.map((skill, index) => (
-              <div
-                key={index}
-                style={skillCardStyle}
-                className="skill-card fade-in hover-lift"
-                onMouseEnter={(e) => {
-                  e.currentTarget.querySelector('.glow-effect').style.opacity = 1;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.querySelector('.glow-effect').style.opacity = 0;
-                }}
-              >
-                <div className="glow-effect" style={glowEffect}></div>
-                <div 
-                  className="skill-icon" 
-                  style={skillIconStyle(skill.color)}
-                >
-                  {skill.icon}
+              <div key={index} style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: '24px',
+                padding: '2.5rem',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                transition: 'all 0.3s ease',
+                position: 'relative'
+              }}>
+                {/* Skill Header */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '1.5rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{
+                      fontSize: '3.2rem',
+                      color: skill.color,
+                      filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))'
+                    }}>{skill.icon}</div>
+                    <div>
+                      <h3 style={{
+                        fontWeight: '700',
+                        fontSize: '1.4rem',
+                        color: theme.text,
+                        marginBottom: '0.3rem',
+                        margin: 0
+                      }}>{skill.name}</h3>
+                      <p style={{
+                        fontSize: '0.85rem',
+                        fontWeight: '600',
+                        color: theme.accent,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        margin: 0
+                      }}>{skill.category}</p>
+                    </div>
+                  </div>
+                  <div style={{
+                    fontSize: '0.95rem',
+                    fontWeight: '600',
+                    color: theme.textSecondary,
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    padding: '0.4rem 0.8rem',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>{skill.level}</div>
                 </div>
-                <h3 style={skillNameStyle}>{skill.name}</h3>
-                <p style={skillLevelStyle}>{skill.level}</p>
-                <div style={progressBarStyle(skill.color)}>
-                  <div 
-                    style={progressFillStyle(skill.color, skill.level)}
-                    className="progress-fill"
-                  ></div>
+
+                <p style={{
+                  fontSize: '0.95rem',
+                  color: theme.textSecondary,
+                  marginBottom: '2rem',
+                  lineHeight: '1.6'
+                }}>{skill.description}</p>
+
+                {/* Progress Bar */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '0.8rem'
+                  }}>
+                    <span style={{ fontSize: '0.9rem', fontWeight: '600', color: theme.text }}>Proficiency</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: '700', color: theme.text }}>{skill.percentage}%</span>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    width: '100%',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    borderRadius: '20px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      background: `linear-gradient(90deg, ${skill.color}, ${skill.color}dd)`,
+                      borderRadius: '20px',
+                      width: `${skill.percentage}%`,
+                      transition: 'width 1s ease',
+                      boxShadow: `0 0 20px ${skill.color}40`
+                    }}></div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Skill Categories Section */}
-          <div style={{
-            background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.7)',
-            borderRadius: '20px',
-            padding: '2.5rem',
-            backdropFilter: 'blur(10px)',
-            border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-            boxShadow: isDarkTheme 
-              ? '0 15px 35px rgba(0, 0, 0, 0.2)'
-              : '0 15px 35px rgba(0, 0, 0, 0.08)',
-            margin: '4rem auto',
-            maxWidth: '1000px'
-          }} className="fade-in">
+          {/* Categories */}
+<div style={{
+  background: 'rgba(255, 255, 255, 0.04)',
+  borderRadius: '32px',
+  padding: window.innerWidth < 500 ? '2rem 1rem' : '4rem 3rem',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+  margin: '5rem auto',
+  maxWidth: '1200px',
+  width: '90%'
+}}>
+
             <h3 style={{
-              fontSize: '1.8rem',
-              fontWeight: '700',
+              fontSize: '2.2rem',
+              fontWeight: '800',
               color: theme.text,
-              marginBottom: '2rem',
-              textAlign: 'center'
-            }}>
-              Skill Categories
-            </h3>
-            
+              marginBottom: '3rem',
+              textAlign: 'center',
+              letterSpacing: '-0.02em'
+            }}>Skill Categories</h3>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
               gap: '2rem'
             }}>
-              {[
-                {
-                  title: 'Frontend Development',
-                  skills: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Redux', 'Tailwind CSS'],
-                  color: '#3b82f6'
-                },
-                {
-                  title: 'Backend & Databases',
-                  skills: ['Python', 'Firebase', 'MySQL'],
-                  color: '#8b5cf6'
-                },
-                {
-                  title: 'Tools & Others',
-                  skills: ['Git', 'GitHub', 'C', 'C++'],
-                  color: '#06b6d4'
-                }
-              ].map((category, index) => (
+              {categoriesData.map((category, index) => (
                 <div key={index} style={{
-                  background: isDarkTheme ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                  padding: '1.5rem',
-                  borderRadius: '15px',
-                  border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)'}`,
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  padding: '2rem',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
                   transition: 'all 0.3s ease'
-                }} className="hover-lift">
-                  <h4 style={{
-                    fontSize: '1.3rem',
-                    fontWeight: '600',
-                    color: theme.text,
-                    marginBottom: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                  }}>
-                    <span style={{
-                      display: 'inline-block',
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      background: category.color
-                    }}></span>
-                    {category.title}
-                  </h4>
-                  <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '0.5rem'
-                  }}>
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <span style={{ fontSize: '2rem', marginRight: '1rem' }}>{category.icon}</span>
+                    <h4 style={{
+                      fontSize: '1.4rem',
+                      fontWeight: '700',
+                      color: theme.text,
+                      margin: 0
+                    }}>{category.title}</h4>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem' }}>
                     {category.skills.map((skill, i) => (
                       <span key={i} style={{
-                        background: isDarkTheme 
-                          ? 'rgba(255, 255, 255, 0.1)' 
-                          : 'rgba(0, 0, 0, 0.05)',
+                        background: 'rgba(255, 255, 255, 0.08)',
                         color: theme.text,
-                        padding: '0.5rem 1rem',
-                        borderRadius: '20px',
+                        padding: '0.6rem 1.2rem',
+                        borderRadius: '16px',
                         fontSize: '0.9rem',
-                        fontWeight: '500',
-                        border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`
-                      }}>
-                        {skill}
-                      </span>
+                        fontWeight: '600',
+                        border: '1px solid rgba(255, 255, 255, 0.12)'
+                      }}>{skill.name}</span>
                     ))}
+                  </div>
+                  <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1rem',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255, 255, 255, 0.04)'
+                  }}>
+                    <div style={{
+                      fontSize: '0.85rem',
+                      color: theme.textSecondary,
+                      fontWeight: '500'
+                    }}>
+                      Average Proficiency: {Math.round(category.skills.reduce((acc, skill) => acc + skill.percentage, 0) / category.skills.length)}%
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Call to Action */}
-          <div style={{
-            textAlign: 'center',
-            marginTop: '3rem'
-          }}>
-            <div style={{
-              background: isDarkTheme ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-              padding: '2rem',
-              borderRadius: '20px',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`
-            }} className="fade-in">
-              <h3 style={{
-                fontSize: '1.5rem',
-                fontWeight: '700',
-                color: theme.text,
-                marginBottom: '1rem'
-              }}>
-                Ready to Collaborate?
-              </h3>
-              <p style={{
-                fontSize: '1.1rem',
-                color: theme.textSecondary,
-                marginBottom: '1.5rem'
-              }}>
-                I'm always excited to work on new projects and challenges. Let's build something amazing together!
-              </p>
-              <button style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                color: 'white',
-                padding: '1rem 2rem',
-                borderRadius: '50px',
-                border: 'none',
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)'
-              }}
-              className="hover-lift"
-              onClick={() => console.log('Navigate to contact')}>
-                Contact Me →
-              </button>
-            </div>
-          </div>
         </div>
       </div>
-    </>
     </section>
   );
 };

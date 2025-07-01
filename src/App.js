@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Skills from './pages/Skills';
 import Projects from './pages/Projects';
-import Certificates from './pages/Certifications';
+import Achievements from './pages/Certifications';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
 
@@ -197,17 +197,17 @@ const App = () => {
               <FiLayers /> Projects
             </motion.a>
             <motion.a
-              href="#certificates"
-              style={navLinkStyle(activeSection === 'certificates')}
-              onClick={() => handleNavClick('certificates')}
+              href="#Achievements"
+              style={navLinkStyle(activeSection === 'Achievements')}
+              onClick={() => handleNavClick('Achievements')}
               whileHover={{ 
                 scale: 1.05,
                 color: theme.accent,
-                background: activeSection === 'certificates' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 255, 255, 0.05)'
+                background: activeSection === 'Achievements' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 255, 255, 0.05)'
               }}
               whileTap={{ scale: 0.95 }}
             >
-              <FiAward /> Certificates
+              <FiAward /> Achievements
             </motion.a>
             <motion.a
               href="#contact"
@@ -286,11 +286,11 @@ const App = () => {
               <FiLayers /> Projects
             </a>
             <a
-              href="#certificates"
-              style={activeSection === 'certificates' ? activeMobileMenuItemStyle : mobileMenuItemStyle}
-              onClick={() => handleNavClick('certificates')}
+              href="#Achievements"
+              style={activeSection === 'Achievements' ? activeMobileMenuItemStyle : mobileMenuItemStyle}
+              onClick={() => handleNavClick('Achievements')}
             >
-              <FiAward /> Certificates
+              <FiAward /> Achievements
             </a>
             <a
               href="#contact"
@@ -316,8 +316,8 @@ const App = () => {
       <section id="projects" style={sectionStyle}>
         <Projects isDarkTheme={true} />
       </section>
-      <section id="certificates" style={sectionStyle}>
-        <Certificates isDarkTheme={true} />
+      <section id="Achievements" style={sectionStyle}>
+        <Achievements isDarkTheme={true} />
       </section>
       <section id="contact" style={sectionStyle}>
         <Contact isDarkTheme={true} />
